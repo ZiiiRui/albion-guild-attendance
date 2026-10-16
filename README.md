@@ -141,5 +141,3 @@ attendance:
 | `MYSQL_ROOT_PASSWORD` | 仅用于 Compose 初始化 MySQL 管理员 |
 | `HTTP_BIND_ADDRESS` | JAR 默认 127.0.0.1；容器内为 0.0.0.0 |
 | `HTTP_PORT` | HTTP 端口，默认 8080 |
-
-实际配置、`.env`、构建产物和名单输出均被 Git 忽略。后续前端建议经同源反向代理调用接口；与 AlbionWeb 对接时，可以保持服务独立部署并使用 HTTP 接口，也可按业务需要复用 `core` 中的战报采集与统计代码。
