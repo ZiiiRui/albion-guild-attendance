@@ -1,0 +1,9 @@
+.git
+.env
+config
+target
+output
+.idea
+attendance
+tests
+*.log

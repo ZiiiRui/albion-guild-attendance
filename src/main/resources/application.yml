@@ -1,0 +1,32 @@
+server:
+  address: ${HTTP_BIND_ADDRESS:127.0.0.1}
+  port: ${HTTP_PORT:8080}
+spring:
+  application:
+    name: albion-guild-attendance
+  config:
+    import: optional:file:./config/application.yml
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/albion_attendance?characterEncoding=UTF-8&connectionTimeZone=UTC}
+    username: ${MYSQL_USER:attendance}
+    password: ${MYSQL_PASSWORD:}
+    hikari:
+      maximum-pool-size: 4
+      connection-timeout: 10000
+attendance:
+  server: europe
+  guild-id: ""
+  guild-name: ""
+  fetch-time-utc: "23:30"
+  min-guild-players: 5
+  min-battle-players: 10
+  output-directory: ./output
+  scheduling-enabled: true
+  finalize-previous-day: true
+  retry-delay-seconds: 300
+  api:
+    timeout-seconds: 30
+    retries: 3
+    retry-seconds: 1
+    page-limit: 50
+    max-pages: 200

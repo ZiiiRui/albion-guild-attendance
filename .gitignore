@@ -1,0 +1,11 @@
+.env
+config/application.yml
+target/
+output/
+*.log
+.idea/
+*.iml
+# Local artifacts from the former implementation are never published.
+__pycache__/
+.venv/
+config.toml

@@ -1,0 +1,19 @@
+attendance:
+  # asia / europe / americas
+  server: europe
+  # ID 或名称至少填一个；两者都填时必须匹配。
+  guild-id: "lrRaQxznSiC_yZI1Sepg0g"
+  guild-name: ""
+  fetch-time-utc: "23:30"
+  min-guild-players: 5
+  min-battle-players: 10
+  output-directory: ./output
+  scheduling-enabled: true
+  finalize-previous-day: true
+  retry-delay-seconds: 300
+  api:
+    timeout-seconds: 30
+    retries: 3
+    retry-seconds: 1
+    page-limit: 50
+    max-pages: 200

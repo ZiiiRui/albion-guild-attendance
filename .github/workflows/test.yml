@@ -1,0 +1,36 @@
+name: Java tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: ci-test-only
+          MYSQL_DATABASE: attendance_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -pci-test-only"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: mvn -B verify
+        env:
+          ATTENDANCE_TEST_DB: '1'
+          TEST_DB_URL: jdbc:mysql://127.0.0.1:3306/attendance_test?useSSL=false&allowPublicKeyRetrieval=true
+          TEST_DB_USER: root
+          TEST_DB_PASSWORD: ci-test-only
+      - run: docker compose config --quiet
+        env:
+          MYSQL_PASSWORD: ci-test-only
+          MYSQL_ROOT_PASSWORD: ci-root-test-only
+      - run: docker build -t albion-guild-attendance:test .

@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: albion_attendance
+      MYSQL_USER: attendance
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql -u attendance -D albion_attendance -e 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+  collector:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MYSQL_URL: jdbc:mysql://db:3306/albion_attendance?characterEncoding=UTF-8&connectionTimeZone=UTC
+      MYSQL_USER: attendance
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env}
+      HTTP_BIND_ADDRESS: 0.0.0.0
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./config/application.yml:/app/config/application.yml:ro
+      - reports:/app/output
+volumes:
+  mysql-data:
+  reports:
